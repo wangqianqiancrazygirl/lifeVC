@@ -1,7 +1,9 @@
 <template>
-  <div>
+  <div id="top">
     <router-view></router-view>
     <el-footer></el-footer>
+    <a class="toTop" target="#top">
+    </a>
   </div>
 </template>
 
@@ -12,6 +14,9 @@
     components: {
       'el-header': header,
       'el-footer': footer
+    },
+    created () {
+
     }
   }
 </script>
@@ -36,12 +41,19 @@
         float: left
         margin: 0 auto
         position: relative
-        /*.ico
-          width: 100%
-          height: 40px
-          background-position: 50%
-          background-repeat: no-repeat
-          background-size: 28%
-          margin-bottom: 15px*/
-
+  .toTop
+    position fixed
+    width 30px
+    height 30px
+    border-radius 50%
+    bottom 70px
+    overflow hidden
+    background rgba(0,0,0,.8)
+    border-radius: 50%
+    right 2%
+    z-index 99
+    &::before
+      content ''
+      display inline-block
+      background-color: #fff
 </style>

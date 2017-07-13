@@ -8,23 +8,27 @@
             <div class="mint-loadmore-top">
               <span class="mint-loadmore-text">下拉刷新</span>
             </div>
-            <div>
-              <div class="swiper-container">
-                <div class="carousel-wrap" id="carousel">
-                  <transition-group tag="ul" class='slide-ul' name="list">
-                    <li v-for="(list,index) in slideList" :key="index" v-show="index===currentIndex" @mouseenter="stop"
-                        @mouseleave="go">
-                      <a :href="list.clickUrl">
-                        <img :src="list.image" :alt="list.desc">
-                      </a>
-                    </li>
-                  </transition-group>
-                  <div class="carousel-items">
-                  <span v-for="(item,index) in slideList.length" :class="{'active':index===currentIndex}"
-                        @mouseover="change(index)"></span>
-                  </div>
-                </div>
-              </div>
+            <div class="autoPlay">
+              <swiper :options="swiperOption" ref="mySwiper">
+                <!-- slides -->
+                <swiper-slide>
+                  <img src="./image01.jpg" alt="">
+                </swiper-slide>
+                <swiper-slide>
+                  <img src="./image02.jpg" alt="">
+                </swiper-slide>
+                <swiper-slide>
+                  <img src="./image03.jpg" alt="">
+                </swiper-slide>
+                <swiper-slide>
+                  <img src="./image04.jpg" alt="">
+                </swiper-slide>
+                <swiper-slide>
+                  <img src="./image05.jpg" alt="">
+                </swiper-slide>
+                <!-- Optional controls -->
+                <div class="swiper-pagination"  slot="pagination"></div>
+              </swiper>
             </div>
             <div class="item-combo" v-for="item in items">
               <div class="img-wrap" :style="`{height: ${item.height}}`">
@@ -45,43 +49,41 @@
 
 <script>
   import header from '../header/header.vue'
+  import { swiper, swiperSlide } from 'vue-awesome-swiper'
   export default {
-    data () {
+    name: 'carrousel',
+    data() {
       return {
-        slideList: [
-          {
-            "clickUrl": "#",
-            "desc": "nhwc",
-            "image": "http://i.lifevccdn.com/upload/IndexBanner/85f5aea681ab4e98b72f1d59b9a5b073_d1242x0.jpg"
-          },
-          {
-            "clickUrl": "#",
-            "desc": "hxrj",
-            "image": "http://i.lifevccdn.com/upload/IndexBanner/09c6c6a15c2d48d19a03b473a7c3764a_d1242x0.jpg"
-          },
-          {
-            "clickUrl": "#",
-            "desc": "rsdh",
-            "image": "http://i.lifevccdn.com/upload/IndexBanner/e234e5b64ab1456c9345dc8a4d604fb2_d1242x0.jpg"
-          },
-          {
-            "clickUrl": "#",
-            "desc": "nhwc",
-            "image": "http://i.lifevccdn.com/upload/IndexBanner/b074f4f091d44569acdd9d001cd4e0b5_d1242x0.jpg"
-          },
-          {
-            "clickUrl": "#",
-            "desc": "hxrj",
-            "image": "http://i.lifevccdn.com/upload/IndexBanner/924590309cb749fabf810a832a402984_d1242x0.jpg"
-          },
-          {
-            "clickUrl": "#",
-            "desc": "rsdh",
-            "image": "http://i.lifevccdn.com/upload/IndexBanner/e0f30fd934134d28ad9c5c45f96c7045_d1242x0.jpg"
-          }
-        ],
-        currentIndex: 0,
-        timer: '',
+        swiperOption: {
+          // NotNextTick is a component's own property, and if notNextTick is set to true, the component will not instantiate the swiper through NextTick, which means you can get the swiper object the first time (if you need to use the get swiper object to do what Things, then this property must be true)
+          // notNextTick是一个组件自有属性，如果notNextTick设置为true，组件则不会通过NextTick来实例化swiper，也就意味着你可以在第一时间获取到swiper对象，假如你需要刚加载遍使用获取swiper对象来做什么事，那么这个属性一定要是true
+          notNextTick: true,
+          // swiper configs 所有的配置同swiper官方api配置
+          autoplay: 2000,
+          loop:true,
+          direction : 'horizontal',
+          autoplayDisableOnInteraction: false,
+          grabCursor : true,
+          setWrapperSize :true,
+          autoHeight: false,
+          pagination : '.swiper-pagination',
+          paginationClickable :true,
+          prevButton:false,
+          nextButton:false,
+          scrollbar: false,
+          mousewheelControl : true,
+          observeParents:true,
+          // if you need use plugins in the swiper, you can config in here like this
+          // 如果自行设计了插件，那么插件的一些配置相关参数，也应该出现在这个对象中，如下debugger
+          debugger: true,
+          // swiper callbacks
+          // swiper的各种回调函数也可以出现在这个对象中，和swiper官方一样
+          /*onTransitionStart(swiper){
+            console.log(swiper)
+          },*/
+          // more Swiper configs and callbacks...
+          // ...
+        },
         items: [
           {
             id: 'map0',
@@ -445,36 +447,23 @@
           },
         ]
       }
-
     },
-    created () {
-      this.$nextTick(() => {
-        this.timer = setInterval(() => {
-          this.autoPlay()
-        }, 3000)
-      })
-    },
-    methods: {
-      go() {
-        this.timer = setInterval(() => {
-          this.autoPlay()
-        }, 3000)
-      },
-      stop() {
-        clearInterval(this.timer)
-        this.timer = null
-      },
-      change(index) {
-        this.currentIndex = index
-      },
-      autoPlay() {
-        this.currentIndex++
-        if (this.currentIndex > this.slideList.length - 1) {
-          this.currentIndex = 0
-        }
+    // you can find current swiper instance object like this, while the notNextTick property value must be true
+    // 如果你需要得到当前的swiper对象来做一些事情，你可以像下面这样定义一个方法属性来获取当前的swiper对象，同时notNextTick必须为true
+    computed: {
+      swiper() {
+        return this.$refs.mySwiper.swiper
       }
     },
+    mounted() {
+      // you can use current swiper instance object to do something(swiper methods)
+      // 然后你就可以使用当前上下文内的swiper对象去做你想做的事了
+      // console.log('this is current swiper instance object', this.swiper)
+      this.swiper.slideTo(2, 1000, false)
+    },
     components: {
+      swiper,
+      swiperSlide,
       'el-header': header
     }
   }
@@ -492,7 +481,7 @@
     .mint-loadmore
       overflow hidden
       .mint-loadmore-content
-        //transform translate3d(0, 0, 0)
+        //1transform translate3d(0, 0, 0)
         .mint-loadmore-top
           margin-top: -50px
           text-align: center
@@ -500,53 +489,13 @@
           line-height: 50px
           .mint-loadmore-text
             vertical-align: middle
-        .swiper-container
-          height: 250px
-          margin-left: auto
-          margin-right: auto
-          position: relative
-          z-index: 1
-          .carousel-wrap
-            position: relative
-            height: 250px
-            width: 100%
-            background-color: #fff
-            .slide-ul
-              width: 100%
-              height: 100% /*&.list-enter-active
-                transition: all 1s ease
-                transform: translateX(0)
-              &.list-leave-active
-                transition: all 1s ease
-                transform: translateX(-100%)
-              &.list-enter
-                transform: translateX(100%)
-              &.list-leave
-                transform: translateX(0)*/
-              li
-                position: absolute
-                width: 100%
-                height: 100%
-                img
-                  width: 375px
-            .carousel-items
-              position: absolute
-              z-index: 2000
-              top: 240px
-              width: 100%
-              margin: 0 auto
-              text-align: center
-              font-size: 0
-              span
-                display: inline-block
-                height: 8px
-                width: 8px
-                border-radius 50%
-                margin: 0 5px
-                background-color: white
-                cursor: pointer
-              .active
-                background-color: #89be48
+        .autoPlay
+          .swiper-wrapper
+            img
+              width 100%
+          .swiper-pagination
+            .swiper-pagination-bullet-active
+              background-color: #89be48
         .item-combo
           margin-bottom 5px
 </style>

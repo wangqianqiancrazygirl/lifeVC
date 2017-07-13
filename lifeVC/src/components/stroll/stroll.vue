@@ -6,17 +6,53 @@
       </div>
     </header>
     <div class="scroll-main">
-      <scrollList></scrollList>
-      <scrollList></scrollList>
+      <hawk></hawk>
+      <template v-if="scrollList">
+        <scrollList :filterodd="filterodd"></scrollList>
+        <scrollList :filtereven="filtereven"></scrollList>
+      </template>
     </div>
   </div>
 </template>
 
 <script>
   import scrollList from '../scrollList/scrollList.vue'
+  import hawk from '../hawk/hawk.vue'
+  import axios from 'axios'
+
+  const OK = 0
   export default {
+    data () {
+      return {
+        scrollList: []
+      }
+    },
+    created () {
+      axios.get('/scroll')
+        .then(response => {
+          console.log(response.data)
+          const result = response.data
+          if(result.code === OK) {
+            this.scrollList = result.data
+          }
+        })
+    },
+    computed: {
+      filterodd () {
+        console.log(this.scrollList)
+        return this.scrollList.filter(item => {
+          return item.id % 2 === 1
+        })
+      },
+      filtereven () {
+        return this.scrollList.filter(item => {
+          return item.id % 2 === 0
+        })
+      }
+    },
     components: {
-      scrollList
+      scrollList,
+      hawk
     }
   }
 </script>

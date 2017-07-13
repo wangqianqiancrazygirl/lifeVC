@@ -1,6 +1,6 @@
 <template>
   <div class="stroll-all-item">
-    <div class="stroll-item" v-for="item in scrollList">
+    <div class="stroll-item" v-for="item in filterScroll">
       <div class="stroll-type-item">
         <div class="stroll-item-layer">
           <img class="stroll-item-img" :src="item.image">
@@ -10,7 +10,10 @@
           <a href="javascript:void(0);">{{item.title}}</a>
         </h3>
         <div class="stroll-price-bar">
-          <span class="price">￥<em>{{item.price}}</em></span>
+          <span class="price">
+            ￥<em>{{item.price}}</em>
+            <span class="original" v-show="item.oldPrice">￥{{item.oldPrice}}</span>
+          </span>
           <span class="comment">月销 {{item.count}}</span>
         </div>
       </div>
@@ -20,50 +23,11 @@
 
 <script>
   export default {
-    data () {
-      return {
-        scrollList: [
-          {
-            "image": "http://i.lifevccdn.com/upload/stroll/e726ff1fb1d44685a91cf76ff56d5018.jpg",
-            "title": "分类整理收纳箱",
-            "price": 49,
-            "oldPrice": "",
-            "isNew": true,
-            "count": 4082
-          },
-          {
-            "image": "http://i.lifevccdn.com/upload/stroll/06cde94e3e4f4c2093b33fdcb1cb4726.jpg",
-            "title": "可挂式防潮除湿剂(8袋装)",
-            "price": 30,
-            "oldPrice": "",
-            "isNew": false,
-            "count": 5279
-          },
-          {
-            "image": "http://i.lifevccdn.com/upload/stroll/5b388119f79444ba889c4f6b9a118bad.jpg",
-            "title": "加拿大原生木浆抽纸（12包）",
-            "price": 29,
-            "oldPrice": "",
-            "isNew": false,
-            "count": 8141
-          },
-          {
-            "image": "http://i.lifevccdn.com/upload/stroll/66986bc8c2d04e61ae6ba5c204872d71.jpg",
-            "title": "大容量防潮除湿桶(可重复使用)",
-            "price": 19,
-            "oldPrice": "",
-            "isNew": false,
-            "count": 11067
-          },
-          {
-            "image": "http://i.lifevccdn.com/upload/stroll/38226fd7a3c64442bc97b11f5a28dacf.jpg",
-            "title": "精梳棉护肤毛巾(莎曼系列)",
-            "price": 69,
-            "oldPrice": "",
-            "isNew": false,
-            "count": 4794
-          }
-        ]
+    props:['filterodd', 'filtereven'],
+    computed: {
+      filterScroll () {
+        const {filterodd, filtereven} = this
+        return filterodd ? filterodd : filtereven
       }
     }
   }
@@ -115,7 +79,6 @@
           color: #333;
           text-decoration: none;
           font-size: 14px;
-
       .stroll-price-bar
         text-align: left;
         width: 100%;
@@ -131,6 +94,12 @@
           overflow: hidden;
           text-align: left;
           padding: 0 3px
+          .original
+            font-size: 10px;
+            display: inline-block;
+            color: #888;
+            text-decoration: line-through;
+            margin-left: 5px;
         .comment
           font-size: 14px;
           line-height: 30px;

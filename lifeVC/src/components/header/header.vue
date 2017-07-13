@@ -10,13 +10,13 @@
     <div class="menuNav">
       <div class="menuNavNewProductPanel" ref="menuNavNewProductPanel">
         <ul class="menuNavNewProduct" style="width: 800px">
-          <li class="font-large" :class="{active: isShow}">
+          <li class="font-large">
             <router-link to="/home">首页</router-link>
           </li>
           <li class="font-large">
             <router-link to="/new">新品</router-link>
           </li>
-          <li class="font-large" v-for="channel in channels">
+          <li class="font-large" v-for="channel in channels" >
             <router-link :to='`/channel/${channel.id}`'>{{channel.name}}</router-link>
           </li>
         </ul>
@@ -38,7 +38,7 @@
             {id: 3260, name: '软装'},
             {id: 2862, name: '床品'},
             {id: 2863, name: '工作和旅游'},
-            {id: 2863, name: '了解LifeVC'},
+            {id: 2864, name: '了解LifeVC'},
           ],
           isShow: true
         }
@@ -112,14 +112,13 @@
             width: 80px
             text-align: center
             border-bottom: 2px solid #ddd
-            &.active
-              border-bottom: 2px solid #89be48
-              a
-                color: #89be48
             a
               height: 48px
               display: block
               padding: 0
               position: relative
               font-size: 14px
+              &.active
+                border-bottom: 2px solid #89be48
+                color: #89be48
 </style>
