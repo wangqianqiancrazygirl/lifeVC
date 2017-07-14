@@ -11,27 +11,12 @@
   import goodList from '../goodList/goodList.vue'
   import axios from 'axios'
 
-  const OK = 0
-    export default {
-      data () {
-        return {
-          allGoods: []
-        }
-      },
-      created () {
-        axios.get('/goods')
-          .then(response => {
-            const result = response.data
-            if(result.code === OK) {
-              result.data.pop()
-              this.allGoods = result.data
-            }
-          })
-      },
-      components: {
-        goodList
-      }
+  export default {
+    props:['allGoods'],
+    components: {
+      goodList
     }
+  }
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus">

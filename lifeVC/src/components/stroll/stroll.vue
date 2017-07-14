@@ -39,14 +39,13 @@
     },
     computed: {
       filterodd () {
-        console.log(this.scrollList)
-        return this.scrollList.filter(item => {
-          return item.id % 2 === 1
+        return this.scrollList.filter((item, index) => {
+          return index % 2 === 1
         })
       },
       filtereven () {
-        return this.scrollList.filter(item => {
-          return item.id % 2 === 0
+        return this.scrollList.filter((item, index) => {
+          return index % 2 === 0
         })
       }
     },

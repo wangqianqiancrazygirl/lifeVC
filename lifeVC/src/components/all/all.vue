@@ -10,7 +10,7 @@
     </header>
     <div id="content-wrap">
       <div class="life-module">
-        <goods></goods>
+        <goods :allGoods="goodsList"></goods>
       </div>
     </div>
   </div>
@@ -23,6 +23,9 @@
   Vue.component('mt-search', Search)
   export default {
     name: 'page-search',
+    props:{
+      allGoods: Array
+    },
     data() {
       return {
         value: '',
@@ -49,6 +52,10 @@
     computed: {
       filterResult() {
         return this.defaultResult.filter(value => new RegExp(this.value, 'i').test(value));
+      },
+      goodsList () {
+        this.allGoods.pop()
+        return this.allGoods
       }
     },
     components: {

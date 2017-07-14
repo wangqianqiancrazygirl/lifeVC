@@ -1,22 +1,48 @@
 <template>
   <div id="top">
-    <router-view></router-view>
+    <router-view :allGoods="allGoods"></router-view>
     <el-footer></el-footer>
-    <a class="toTop" target="#top">
-    </a>
+    <!--<a class="toTop" target="#top">
+    </a>-->
+    <back-top v-show="topValue">
+      <i class="icon-top"></i>
+    </back-top>
   </div>
 </template>
 
 <script>
   import header from './components/header/header.vue'
   import footer from './components/footer/footer.vue'
+  import BackTop from './components/backtop/BackTop.vue'
+  import axios from 'axios'
   export default {
-    components: {
-      'el-header': header,
-      'el-footer': footer
+    data () {
+      return {
+        topValue: false,
+        allGoods: []
+      }
     },
     created () {
-
+      window.addEventListener('scroll',function(){
+        var scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+        if(scrollTop > 700){
+          this.topValue = true
+        }else {
+          this.topValue = false
+        }
+      }.bind(this),false)
+      axios.get('/goods')
+        .then(response => {
+          var result = response.data
+          if(result.code === 0){
+            this.allGoods = result.data
+          }
+        })
+    },
+    components: {
+      'el-header': header,
+      'el-footer': footer,
+      BackTop
     }
   }
 </script>
@@ -41,19 +67,25 @@
         float: left
         margin: 0 auto
         position: relative
-  .toTop
+  .icon-top
     position fixed
-    width 30px
-    height 30px
+    width 36px
+    height 36px
     border-radius 50%
     bottom 70px
     overflow hidden
     background rgba(0,0,0,.8)
-    border-radius: 50%
     right 2%
     z-index 99
     &::before
       content ''
       display inline-block
-      background-color: #fff
+      width 22px
+      height 12px
+      background: url('../static/img/backtop.png') no-repeat
+      -webkit-background-size 22px 12px
+      background-size 22px 12px
+      margin-top 10px
+      margin-left 7px
+
 </style>

@@ -3,18 +3,18 @@
     <div class="stroll-item" v-for="item in filterScroll">
       <div class="stroll-type-item">
         <div class="stroll-item-layer">
-          <img class="stroll-item-img" :src="item.image">
-          <span class="tag-new" v-show="item.isNew">New</span>
+          <img class="stroll-item-img" :src="item.ImageUrl">
+          <span class="tag-new" v-show="item.ItemType === 1">New</span>
         </div>
         <h3 class="stroll-item-title">
-          <a href="javascript:void(0);">{{item.title}}</a>
+          <a href="javascript:void(0);">{{item.Name}}</a>
         </h3>
         <div class="stroll-price-bar">
           <span class="price">
-            ￥<em>{{item.price}}</em>
-            <span class="original" v-show="item.oldPrice">￥{{item.oldPrice}}</span>
+            ￥<em>{{item.SalePrice}}</em>
+            <span class="original" v-show="item.oldPrice">￥{{item.MarketPrice}}</span>
           </span>
-          <span class="comment">月销 {{item.count}}</span>
+          <span class="comment">月销 {{item.SaleQty}}</span>
         </div>
       </div>
     </div>

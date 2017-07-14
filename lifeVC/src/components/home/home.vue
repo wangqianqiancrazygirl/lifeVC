@@ -48,6 +48,7 @@
 </template>
 
 <script>
+
   import header from '../header/header.vue'
   import { swiper, swiperSlide } from 'vue-awesome-swiper'
   export default {
